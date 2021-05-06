@@ -1,11 +1,11 @@
 let count = 0;
 
-const theFunction = () => {
+const theFunction = (callback) => {
     count += 1;
 
     console.log('lol', count);
 
-    return count < 50 && theFunction();
+    return count < 50 && callback(callback);
 };
 
-theFunction();
+theFunction(theFunction);
