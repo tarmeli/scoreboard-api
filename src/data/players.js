@@ -4,9 +4,12 @@ const {
     initialiseCollection,
     doDatabaseTransaction,
 } = require('./setupDatabase');
+const config = require('../config');
 
 const getPlayer = async (playerID) => {
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     const getPlayerTransaction = async () =>
         await playersCollection.findOne({ _id: ObjectId(playerID) });
@@ -17,7 +20,9 @@ const getPlayer = async (playerID) => {
 const decrement = async (playerID, winsOrLosses) => {
     const player = await getPlayer(playerID);
 
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     await playersCollection.updateOne(
         { _id: ObjectId(playerID) },
@@ -32,7 +37,9 @@ const decrement = async (playerID, winsOrLosses) => {
 const increment = async (playerID, winsOrLosses) => {
     const player = await getPlayer(playerID);
 
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     await playersCollection.updateOne(
         { _id: ObjectId(playerID) },
@@ -45,7 +52,9 @@ const increment = async (playerID, winsOrLosses) => {
 };
 
 const getPlayers = async () => {
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     const getPlayersTransaction = async () =>
         await playersCollection.find().toArray();
@@ -56,7 +65,9 @@ const getPlayers = async () => {
 };
 
 const addPlayer = async (player) => {
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     const addPlayerTransaction = async () => {
         await playersCollection.insertOne({ name: player, wins: 0, losses: 0 });
@@ -68,7 +79,9 @@ const addPlayer = async (player) => {
 };
 
 const removePlayer = async (playerID) => {
-    const playersCollection = await initialiseCollection('players');
+    const playersCollection = await initialiseCollection(
+        config.playersCollection
+    );
 
     const removePlayerTransaction = async () => {
         await playersCollection.deleteOne({ _id: ObjectId(playerID) });

@@ -8,7 +8,7 @@ const databaseClient = new MongoClient(databaseURI);
 const initialiseDatabase = async () => {
     await databaseClient.connect();
 
-    return databaseClient.db('pingpong');
+    return databaseClient.db(config.pingPongDatabase);
 };
 
 const initialiseCollection = async (collection) => {
