@@ -30,6 +30,7 @@
   "scripts": {
     "test": "jest --watchAll",
     "build": "webpack",
+    "start-db": "mongod -dbpath ./src/data/database",
     "start": "nodemon -r dotenv/config src/index.js localhost 4000"
   },
   "author": "Tommi Tarkki",
