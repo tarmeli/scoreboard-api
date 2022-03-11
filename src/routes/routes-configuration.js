@@ -7,15 +7,9 @@ const {
     decrement,
 } = require('../data/players');
 
-const availableRoutes = [
+const routesConfiguration = [
     {
         route: '/',
-        databaseMethod: () => ({ content: 'This is the home page' }),
-        HTTPMethod: 'get',
-        withParameters: false,
-    },
-    {
-        route: '/players',
         databaseMethod: async () => await getPlayers(),
         HTTPMethod: 'get',
         withParameters: false,
@@ -64,4 +58,4 @@ const availableRoutes = [
     },
 ];
 
-module.exports = availableRoutes;
+module.exports = routesConfiguration;

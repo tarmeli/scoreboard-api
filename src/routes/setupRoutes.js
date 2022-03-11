@@ -1,5 +1,5 @@
 const { map } = require('lodash/fp');
-const availableRoutes = require('./availableRoutes');
+const availableRoutes = require('./routes-configuration');
 
 const setupRoutes = (express) => mapToRoutes(express)(availableRoutes);
 

@@ -2,11 +2,11 @@ const { get } = require('lodash/fp');
 
 const getEnvironmentVariable = (variable) => get(variable, process.env);
 
-const config = {
+const applicationConfiguration = {
     port: getEnvironmentVariable('PORT'),
-    databaseURL: getEnvironmentVariable('DB_URL'),
-    pingPongDatabase: getEnvironmentVariable('PINGPONG_DB'),
+    databaseURL: getEnvironmentVariable('DATABASE_URL'),
+    scoreboardDatabase: getEnvironmentVariable('SCOREBOARD_DATABASE'),
     playersCollection: getEnvironmentVariable('PLAYERS_COLLECTION'),
 };
 
-module.exports = config;
+module.exports = applicationConfiguration;

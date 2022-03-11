@@ -1,7 +1,7 @@
-const config = require('../config');
+const { port } = require('../application-configuration');
 
 const runServer = (app) => {
-    app.listen(config.port, () => console.log(`Listening on ${config.port}!`));
+    app.listen(port, () => console.log(`Listening on ${port}!`));
 };
 
 module.exports = runServer;
