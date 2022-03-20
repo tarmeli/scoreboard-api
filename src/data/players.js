@@ -4,15 +4,13 @@ const {
     initialiseCollection,
     doDatabaseTransaction,
 } = require('./setupDatabase');
-const {
-    playersCollection: collection,
-} = require('../application-configuration');
+const { playersCollection } = require('../application-configuration');
 
 const getPlayer = async (playerID) => {
-    const playersCollection = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
     const getPlayerTransaction = async () =>
-        await playersCollection.findOne({ _id: ObjectId(playerID) });
+        await collection.findOne({ _id: ObjectId(playerID) });
 
     return doDatabaseTransaction(getPlayerTransaction);
 };
@@ -20,9 +18,9 @@ const getPlayer = async (playerID) => {
 const decrement = async (playerID, winsOrLosses) => {
     const player = await getPlayer(playerID);
 
-    const playersCollection = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
-    await playersCollection.updateOne(
+    await collection.updateOne(
         { _id: ObjectId(playerID) },
         {
             $set: { [winsOrLosses]: player[winsOrLosses] - 1 },
@@ -35,9 +33,9 @@ const decrement = async (playerID, winsOrLosses) => {
 const increment = async (playerID, winsOrLosses) => {
     const player = await getPlayer(playerID);
 
-    const playersCollection = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
-    await playersCollection.updateOne(
+    await collection.updateOne(
         { _id: ObjectId(playerID) },
         {
             $set: { [winsOrLosses]: player[winsOrLosses] + 1 },
@@ -48,10 +46,9 @@ const increment = async (playerID, winsOrLosses) => {
 };
 
 const getPlayers = async () => {
-    const playersCollection = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
-    const getPlayersTransaction = async () =>
-        await playersCollection.find().toArray();
+    const getPlayersTransaction = async () => await collection.find().toArray();
 
     return {
         players: await doDatabaseTransaction(getPlayersTransaction),
@@ -59,10 +56,10 @@ const getPlayers = async () => {
 };
 
 const addPlayer = async (player) => {
-    const { insertOne } = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
     const addPlayerTransaction = async () => {
-        await insertOne({ name: player, wins: 0, losses: 0 });
+        await collection.insertOne({ name: player, wins: 0, losses: 0 });
     };
 
     await doDatabaseTransaction(addPlayerTransaction);
@@ -71,10 +68,10 @@ const addPlayer = async (player) => {
 };
 
 const removePlayer = async (playerID) => {
-    const { deleteOne } = await initialiseCollection(collection);
+    const collection = await initialiseCollection(playersCollection);
 
     const removePlayerTransaction = async () => {
-        await deleteOne({ _id: ObjectId(playerID) });
+        await collection.deleteOne({ _id: ObjectId(playerID) });
     };
 
     await doDatabaseTransaction(removePlayerTransaction);
