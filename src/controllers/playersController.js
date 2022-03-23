@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const {
     initialiseCollection,
     doDatabaseTransaction,
-} = require('./setupDatabase');
+} = require('../data/setupDatabase');
 const { playersCollection } = require('../application-configuration');
 
 const getPlayer = async (playerID) => {

@@ -5,7 +5,7 @@ const {
     getPlayer,
     increment,
     decrement,
-} = require('../data/players');
+} = require('../controllers/playersController');
 
 const routesConfiguration = [
     {

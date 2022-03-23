@@ -1,6 +1,6 @@
 const { get, flow, join } = require('lodash/fp');
 const decorate = require('./decorate');
-const { handleNullOrUndefined } = require('../error-handling/index');
+const { handleNullOrUndefined } = require('./error-handling/index');
 
 const getEnvironmentVariable = (variable) => {
     return get(variable, process.env);

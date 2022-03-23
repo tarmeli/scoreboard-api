@@ -3,8 +3,8 @@ const availableRoutes = require('./routes-configuration');
 
 const setupRoutes = (express) => mapToRoutes(express)(availableRoutes);
 
-const mapToRoutes = (express) => {
-    return map(({ route, databaseMethod, HTTPMethod, withParameters }) =>
+const mapToRoutes = (express) =>
+    map(({ route, databaseMethod, HTTPMethod, withParameters }) =>
         express[HTTPMethod](route, async (request, response) => {
             if (withParameters) {
                 const {
@@ -18,7 +18,13 @@ const mapToRoutes = (express) => {
                     response.status(500);
                 }
 
-                return response.send({ data, error: { isError, message } });
+                return response.send({
+                    data,
+                    error: {
+                        isError,
+                        message,
+                    },
+                });
             }
 
             const {
@@ -30,9 +36,14 @@ const mapToRoutes = (express) => {
                 response.status(500);
             }
 
-            return response.send({ data, error: { isError, message } });
+            return response.send({
+                data,
+                error: {
+                    isError,
+                    message,
+                },
+            });
         })
     );
-};
 
 module.exports = setupRoutes;
