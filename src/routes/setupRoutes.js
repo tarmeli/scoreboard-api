@@ -7,16 +7,30 @@ const mapToRoutes = (express) => {
     return map(({ route, databaseMethod, HTTPMethod, withParameters }) =>
         express[HTTPMethod](route, async (request, response) => {
             if (withParameters) {
-                const data = await databaseMethod(
+                const {
+                    error: { isError, message },
+                    data,
+                } = await databaseMethod(
                     request.params.id || request.params.name
                 );
 
-                return response.send(data);
+                if (isError) {
+                    response.status(500);
+                }
+
+                return response.send({ data, error: { isError, message } });
             }
 
-            const data = await databaseMethod();
+            const {
+                error: { isError, message },
+                data,
+            } = await databaseMethod();
 
-            return response.send(data);
+            if (isError) {
+                response.status(500);
+            }
+
+            return response.send({ data, error: { isError, message } });
         })
     );
 };

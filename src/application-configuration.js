@@ -1,12 +1,10 @@
-const { get } = require('lodash/fp');
-
-const getEnvironmentVariable = (variable) => get(variable, process.env);
+const { getConfiguration } = require('./utilities/index');
 
 const applicationConfiguration = {
-    port: getEnvironmentVariable('PORT'),
-    databaseURL: getEnvironmentVariable('DATABASE_URL'),
-    scoreboardDatabase: getEnvironmentVariable('SCOREBOARD_DATABASE'),
-    playersCollection: getEnvironmentVariable('PLAYERS_COLLECTION'),
+    port: getConfiguration('PORT'),
+    databaseURL: getConfiguration('DATABASE_URL'),
+    scoreboardDatabase: getConfiguration('SCOREBOARD_DATABASE'),
+    playersCollection: getConfiguration('PLAYERS_COLLECTION'),
 };
 
 module.exports = applicationConfiguration;

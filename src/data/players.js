@@ -7,18 +7,49 @@ const {
 const { playersCollection } = require('../application-configuration');
 
 const getPlayer = async (playerID) => {
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     const getPlayerTransaction = async () =>
         await collection.findOne({ _id: ObjectId(playerID) });
 
-    return doDatabaseTransaction(getPlayerTransaction);
+    return {
+        error: { isError, message },
+        data: { player: await doDatabaseTransaction(getPlayerTransaction) },
+    };
 };
 
 const decrement = async (playerID, winsOrLosses) => {
-    const player = await getPlayer(playerID);
+    const {
+        data: { player },
+    } = await getPlayer(playerID);
 
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     await collection.updateOne(
         { _id: ObjectId(playerID) },
@@ -27,13 +58,33 @@ const decrement = async (playerID, winsOrLosses) => {
         }
     );
 
-    return await getPlayers();
+    const { data } = await getPlayers();
+
+    return {
+        error: { isError, message },
+        data,
+    };
 };
 
 const increment = async (playerID, winsOrLosses) => {
-    const player = await getPlayer(playerID);
+    const {
+        data: { player },
+    } = await getPlayer(playerID);
 
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     await collection.updateOne(
         { _id: ObjectId(playerID) },
@@ -42,21 +93,55 @@ const increment = async (playerID, winsOrLosses) => {
         }
     );
 
-    return await getPlayers();
+    const { data } = await getPlayers();
+
+    return {
+        error: { isError, message },
+        data,
+    };
 };
 
 const getPlayers = async () => {
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     const getPlayersTransaction = async () => await collection.find().toArray();
 
     return {
-        players: await doDatabaseTransaction(getPlayersTransaction),
+        error: { isError, message },
+        data: {
+            players: await doDatabaseTransaction(getPlayersTransaction),
+        },
     };
 };
 
 const addPlayer = async (player) => {
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     const addPlayerTransaction = async () => {
         await collection.insertOne({ name: player, wins: 0, losses: 0 });
@@ -64,11 +149,32 @@ const addPlayer = async (player) => {
 
     await doDatabaseTransaction(addPlayerTransaction);
 
-    return await getPlayers();
+    const { data } = await getPlayers();
+
+    return {
+        error: {
+            isError,
+            message,
+        },
+        data,
+    };
 };
 
 const removePlayer = async (playerID) => {
-    const collection = await initialiseCollection(playersCollection);
+    const {
+        error: { isError, message },
+        collection,
+    } = await initialiseCollection(playersCollection);
+
+    if (isError) {
+        return {
+            error: {
+                isError,
+                message,
+            },
+            data: null,
+        };
+    }
 
     const removePlayerTransaction = async () => {
         await collection.deleteOne({ _id: ObjectId(playerID) });
@@ -76,7 +182,15 @@ const removePlayer = async (playerID) => {
 
     await doDatabaseTransaction(removePlayerTransaction);
 
-    return await getPlayers();
+    const { data } = await getPlayers();
+
+    return {
+        error: {
+            isError,
+            message,
+        },
+        data,
+    };
 };
 
 module.exports = {
